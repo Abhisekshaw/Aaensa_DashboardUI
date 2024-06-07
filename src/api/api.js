@@ -1,10 +1,10 @@
+
 import axios from "axios";
 
 
 export const api = axios.create({ baseURL: process.env.REACT_APP_API });
-export const weatherApi=axios.create({baseURL: process.env.REACT_APP_WEATHERAPI });
+export const weatherApi = axios.create({ baseURL: process.env.REACT_APP_WEATHERAPI });
 
-console.log(process.env.REACT_APP_WEATHERAPI,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 // LOGIN PAGE API
 export const LOGIN = (data) => api.post("/api/auth/login", data);
 
@@ -24,10 +24,10 @@ export const ADDENTERPRISE = (data, header) => api.post("/api/admin/add/enterpri
 export const EDITENTERPRISE = (EnterpriseId, data, header) => api.post(`/api/admin/update/enterprise/${EnterpriseId}`, data, header);
 
 // STATE TABLE API
-export const STATETABLE = (EnterpriseId, header) =>  api.get(`/api/admin/get/enterprise/state/list/${EnterpriseId}`, header);
+export const STATETABLE = (EnterpriseId, header) => api.get(`/api/admin/get/enterprise/state/list/${EnterpriseId}`, header);
 
 // STATE MODEL
-export const ADDSTATELIST = (header) =>  api.get(`/api/admin/get/all/states`, header);
+export const ADDSTATELIST = (header) => api.get(`/api/admin/get/all/states`, header);
 
 //    ADD STATE MODEL
 export const ADDSTATE = (data, header) => api.post(`/api/admin/add/enterprise/state`, data, header);
@@ -75,7 +75,7 @@ export const ENTERPRISEUSERLIST = (header) => api.get("/api/admin/get/enterprise
 export const ADDSYSTEMINTEGRATOR = (userData, header) => api.post("/api/admin/add/system/integrator", userData, header);
 
 // USER DELETE
-export const USERDELETE = (Id, header) => api.post(`/api/admin/delete/user/${Id}`,{},  header);
+export const USERDELETE = (Id, header) => api.post(`/api/admin/delete/user/${Id}`, {}, header);
 
 // Settings
 export const SET = (data, header) => api.post(`/api/hardware/optimizer/setting/value/update`, data, header);
@@ -91,6 +91,7 @@ export const DELETE = (deleteData, header) => api.post(`/api/admin/delete/all`, 
 //Report
 export const METERDATA = (Page, data, header) => api.post(`/api/admin/get/all/meter/data?page=${Page.page}&flag=${Page.flag}&PrevTimeStamp=${Page.PrevTimeStamp}&pageSize=100`, data, header);
 export const DEVICEDATA = (Page, data, header) => api.post(`/api/admin/get/all/device/data?page=${Page.page}&flag=${Page.flag}&PrevTimeStamp=${Page.PrevTimeStamp}pageSize=20`, data, header);
+export const TABLEGRAPH = (data, header) => api.post(`/api/admin//get/all/usage/trends`, data, header);
 
 
 // ACCUWEATHER

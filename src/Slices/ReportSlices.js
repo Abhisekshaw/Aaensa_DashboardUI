@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { METERDATA,DEVICEDATA } from "../api/api";
+import { METERDATA,DEVICEDATA,TABLEGRAPH } from "../api/api";
 
 export const MeterData = createAsyncThunk(
   "MeterData",
@@ -42,6 +42,29 @@ export const DeviceData = createAsyncThunk(
   }
 );
 
+export const TableGraph = createAsyncThunk(
+  "TableGraph",
+
+
+  async ({ data, header }, { rejectWithValue }) => {
+    // console.log(data,"--------------------------------");
+    try {
+      const response = await TABLEGRAPH(data, header);
+      console.log({response});
+      return response?.data;
+    } catch (error) {
+      if (
+        error.response.data.message === "Invalid token" ||
+        error.response.data.message === "Access denied"
+      ) {
+        window.localStorage.clear();
+        window.location.href = "./";
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const initialState = {
   status: "",
   loading1: false,
@@ -52,6 +75,9 @@ const initialState = {
 
   deviceData_response: "",
   deviceData_error: null,
+
+  tableGraph_response: "",
+  tableGraph_error: null,
 };
 
 export const ReportSlice = createSlice({
@@ -70,6 +96,12 @@ export const ReportSlice = createSlice({
     },
     cleardeviceData_error: (state) => {
       state.deviceData_error = null;
+    },
+    cleartableGraph_response: (state) => {
+      state.tableGraph_response = null;
+    },
+    cleartableGraph_error: (state) => {
+      state.tableGraph_error = null;
     },
     
   },
@@ -115,9 +147,30 @@ export const ReportSlice = createSlice({
       state.loading1 = false;
       state.deviceData_error = payload;
     });
+
+    // TABLE GRAPH-----------------------------------------------------------------------------------
+    builder.addCase(TableGraph.pending, (state, { payload }) => {
+      // Add user to the state array
+      state.status = "Loading...";
+      state.loading1 = true;
+    });
+
+    builder.addCase(TableGraph.fulfilled, (state, { payload }) => {
+      // Add user to the state array
+      state.status = "Success";
+      state.loading1 = false;
+      state.tableGraph_response = payload;
+      state.tableGraph_error = null;
+    });
+    builder.addCase(TableGraph.rejected, (state, { payload }) => {
+      // Add user to the state array
+      state.status = "Failed";
+      state.loading1 = false;
+      state.tableGraph_error = payload;
+    });
   },
 });
 
-export const {  cleardeviceData_response, cleardeviceData_error,clearmeterDataError,clearmeterDataResponse } = ReportSlice.actions;
+export const {  cleardeviceData_response, cleardeviceData_error,clearmeterDataError,clearmeterDataResponse, cleartableGraph_response,cleartableGraph_error} = ReportSlice.actions;
 
 export default ReportSlice.reducer;
